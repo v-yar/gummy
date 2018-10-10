@@ -303,7 +303,7 @@ Port       ,Description
 1527       ,"[T:Y] [U:Yes] [S:Y] [D:Oracle Net Services, formerly known as SQL*Net]"
            ,[T:Y] [U:] [S:N] [D:Apache Derby Network Server]
 1533       ,[T:Y] [U:Yes] [S:Y] [D:IBM Sametime Virtual Places Chat]
-1540       ,[T:Y] [U:Yes] [S:N] [D:1C:Enterprise server agent (ragent)  ]
+1540       ,[T:Y] [U:Yes] [S:N] [D:1C:Enterprise server agent (ragent)]
 1541       ,[T:Y] [U:Yes] [S:N] [D:1C:Enterprise master cluster manager (rmngr) ]
 1542       ,[T:Y] [U:Yes] [S:N] [D:1C:Enterprise configuration repository server ]
 1545       ,[T:Y] [U:Yes] [S:N] [D:1C:Enterprise cluster administration server (RAS) ]

@@ -69,21 +69,20 @@ class Config:
     def read_default_config(self):
         """method for read a basic configuration file."""
         if not os.path.exists(self.default_config_path):
-            self.log.warning(f'\nThe configuration file {self.default_config_path} was not found! '
-                             f'\nUse \'--create-default-config\'')
-            exit()
-        else:
-            self.log.info('Read configuration file')
-            try:
-                config = configparser.RawConfigParser()
-                config.read(self.default_config_path)
-                self.log.info(f'Default configuration file {self.default_config_path} successfully read')
-            except Exception:
-                self.log.warning(f'Default configuration file {self.default_config_path} incorrect!')
-                raise Exception()
+            self.log.info(f'The configuration file {self.default_config_path} was not found.')
+            self.create_default_config()
 
-            self.default_config = config
-            self.start_config = config
+        self.log.info('Read configuration file')
+        try:
+            config = configparser.RawConfigParser()
+            config.read(self.default_config_path)
+            self.log.info(f'Default configuration file {self.default_config_path} successfully read')
+        except Exception:
+            self.log.warning(f'Default configuration file {self.default_config_path} incorrect!')
+            raise Exception()
+
+        self.default_config = config
+        self.start_config = config
 
     def read_start_config(self, file):
         """method for read a basic configuration file."""

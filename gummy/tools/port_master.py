@@ -1,4 +1,6 @@
 import csv
+import os
+from pathlib import Path
 
 from gummy.tools.log import Log
 
@@ -18,9 +20,10 @@ class PortMaster:
         :param stat_weight: statistical list priority
         """
         self.log = Log(name='PortMaster')
-        self.man_port_rating_file = './data/ManPortRating.csv'
-        self.nmap_port_rating_file = './data/PortRating.csv'
-        self.stat_port_rating_file = './data/StatPortRating.csv'
+        self.DIR = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../data')))
+        self.man_port_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'ManPortRating.csv')))
+        self.nmap_port_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'PortRating.csv')))
+        self.stat_port_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'StatPortRating.csv')))
         self.nmap_weight = nmap_weight
         self.stat_weight = stat_weight
         self.tcp_port = list()

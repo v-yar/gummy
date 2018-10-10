@@ -6,7 +6,7 @@ long_description = open(os.path.join(os.path.dirname(__file__), 'README.md')).re
 
 setup(
     name='gummy',
-    version='0.1',
+    version='0.1.1',
     description='Automated LAN scanner based on masscan and nmap',
     long_description=long_description,
     author='Vladimir Yarmiychuk',
@@ -19,7 +19,8 @@ setup(
         'objectpath',
         'jsonmerge',
         'jsonschema',
-        'psutil'
+        'psutil',
+        'pytz'
     ],
     entry_points={
         'console_scripts': [
