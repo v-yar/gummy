@@ -5,13 +5,13 @@ from setuptools import setup
 long_description = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 
 setup(
-    name='gummy_scan',
+    name='gummy',
     version='0.1',
     description='Automated LAN scanner based on masscan and nmap',
     long_description=long_description,
     author='Vladimir Yarmiychuk',
-    author_email='evil.gummy.bear@protonmail.com',
-    url='https://github.com/evil-gummy-bear/gummy',
+    author_email='yarmiychuk@protonmail.com ',
+    url='https://github.com/v-yar/gummy',
     install_requires=[
         'prompt_toolkit',
         'prettytable',
