@@ -11,6 +11,7 @@ setup(
     long_description=long_description,
     author='Vladimir Yarmiychuk',
     author_email='evil.gummy.bear@protonmail.com',
+    url='https://github.com/evil-gummy-bear/gummy',
     install_requires=[
         'prompt_toolkit',
         'prettytable',
