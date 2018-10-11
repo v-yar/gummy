@@ -49,7 +49,7 @@ class Nscanner:
             self.version = mach.group('ver')
             self.log.debug(f'Use: {self._prog_path} (Version {self.version})')
         except Exception:
-            self.log.warning('Program was not found')
+            self.log.warning('Nmap was not found')
             raise Exception()
 
     async def __call__(self, **kwargs):

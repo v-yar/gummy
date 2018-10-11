@@ -60,7 +60,7 @@ class Mscanner:
             self.version = mach.group('ver')
             self.log.info(f'Use: {self._prog_path} (Version {self.version})')
         except Exception:
-            self.log.warning('Program was not found')
+            self.log.warning('Masscan was not found')
             raise Exception()
 
     async def __call__(self, **kwargs):
