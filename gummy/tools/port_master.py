@@ -22,7 +22,7 @@ class PortMaster:
         self.log = Log(name='PortMaster')
         self.DIR = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), '../data')))
         self.man_port_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'ManPortRating.csv')))
-        self.nmap_port_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'PortRating.csv')))
+        self.nmap_port_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'NmapPortRating.csv')))
         self.stat_port_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'StatPortRating.csv')))
         self.nmap_weight = nmap_weight
         self.stat_weight = stat_weight

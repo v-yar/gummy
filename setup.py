@@ -6,7 +6,7 @@ long_description = open(os.path.join(os.path.dirname(__file__), 'README.md')).re
 
 setup(
     name='gummy',
-    version='0.1.15',
+    version='0.1.17',
     description='Automated LAN scanner based on masscan and nmap',
     long_description=long_description,
     author='Vladimir Yarmiychuk',
@@ -35,7 +35,7 @@ setup(
               'gummy.entry_points'],
     package_data={'gummy': ['data/ManPortRating.csv',
                             'data/PortDescription.csv',
-                            'data/PortRating.csv',
+                            'data/NmapPortRating.csv',
                             'data/StatPortRating.csv']},
     classifiers=[
         'Development Status :: 3 - Alpha',
