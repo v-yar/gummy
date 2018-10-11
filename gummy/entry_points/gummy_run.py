@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals
 import datetime
 import sys
 
+import gummy
 from gummy.modules.scanner import Scanner
 from gummy.tools.arg_pars import ArgPars
 from gummy.tools.config import Config
@@ -19,6 +20,11 @@ def run():
     # parse start arguments
     args = ArgPars()
     args()
+
+    # display current version
+    if args.version:
+        print(f'Gummy version {gummy.__version__} (https://github.com/v-yar/gummy)')
+        sys.exit()
 
     # get default config
     config = Config()

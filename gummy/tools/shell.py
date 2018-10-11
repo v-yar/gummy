@@ -23,6 +23,7 @@ from prompt_toolkit.shortcuts import PromptSession
 from prompt_toolkit.shortcuts import clear
 from prompt_toolkit.styles import Style
 
+import gummy
 from gummy.tools.log import Log
 from gummy.tools.parser import Parser
 from gummy.tools.tools import mk_dir, get_battery
@@ -155,7 +156,8 @@ class GummyShell:
         self.completer = GCompleter(self.commands)
         self.history_path = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), '../.history')))
         self.history = FileHistory(self.history_path)
-        self.logo = HTML('''
+        version_str = ''.join(['v', gummy.__version__, ' '])
+        self.logo = HTML(f'''
         <text>                                      </text><bear>    _     _   </bear>
         <text>   _____ _    _ __  __ __  ____     __</text><bear>   (c).-.(c)  </bear>
         <text>  / ____| |  | |  \/  |  \/  \ \   / /</text><bear>    / ._. \   </bear>
@@ -164,7 +166,7 @@ class GummyShell:
         <text> | |__| | |__| | |  | | |  | |  | |   </text><bear>    || </bear><text>G</text><bear> ||   </bear>
         <text>  \_____|\____/|_|  |_|_|  |_|  |_|   </text><bear>  _.' `-' '._ </bear>
         <text>                                      </text><bear> (.-./`-'\.-.)</bear>
-        <text>                                      </text><bear>  `-'      `-'</bear>
+        <text>{version_str:>38}</text><bear>  `-'      `-'</bear>
         ''')
         self.prompt_str = [('class:prompt_for_input', '>>> ')]
         self.counter = 0

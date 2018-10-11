@@ -6,8 +6,6 @@ from gummy.tools.log import Log
 
 class ArgPars:
     """class for getting and presenting in the form of script arguments"""
-
-    # TODO fix parameter list
     def __init__(self):
         """initialization of the argument class"""
         self.log = Log(name='argum')
@@ -27,16 +25,13 @@ class ArgPars:
         parser = argparse.ArgumentParser(prog='GUMMY SCAN',
                                          formatter_class=argparse.RawDescriptionHelpFormatter,
                                          description=textwrap.dedent('''\
-                            Automated LAN scanner based on masscan and nmap 
-                            1. You need insall masscan and nmap 
-                            2. You need set the bits with symbolic modes (cmod +s) 
-                            3. Change the path to programs in gummy/config.py if this is need'''),
-                                         epilog='https://github.com/evil-gummy-bear/gummy_scan')
+                            Automated LAN scanner based on masscan and nmap'''),
+                                         epilog='https://github.com/v-yar/gummy')
 
         parser.add_argument('target',
                             nargs='?',
                             default='auto',
-                            help='Target for masscan (default auto)')
+                            help='Target for scan (default auto)')
 
         parser.add_argument('-w', '--workspase',
                             action='store',
@@ -46,12 +41,12 @@ class ArgPars:
         parser.add_argument('-p', '--port',
                             action='store',
                             dest='port',
-                            help='Masscan target port')
+                            help='Scan target port')
 
         parser.add_argument('--top-ports',
                             action='store',
                             dest='top_ports',
-                            help='Masscan target top port')
+                            help='Scan target top port')
 
         parser.add_argument('--rate',
                             action='store',
@@ -65,10 +60,10 @@ class ArgPars:
                             choices=['fast', 'basic', 'full'],
                             help='Nmap gummy_scan type (default basic)')
 
-        parser.add_argument('-f', '--force',
+        parser.add_argument('-V', '--version',
                             action='store_true',
-                            dest='force',
-                            help='Disable start request')
+                            dest='version',
+                            help='Вisplay current version')
 
         parser.add_argument('--create-default-config',
                             action='store_true',
@@ -84,7 +79,7 @@ class ArgPars:
         self.rate = args.rate
         self.nmap_scan_type = args.nmap_scan_type
         self.workspase = args.workspase
-        self.force = args.force
+        self.version = args.version
         self.create_default_config = args.create_default_config
 
         for item in self.__dict__.keys():

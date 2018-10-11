@@ -2,18 +2,20 @@ import os
 
 from setuptools import setup
 
+import gummy
+
 long_description = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 
 setup(
     name='gummy',
-    version='0.1.17',
+    version=gummy.__version__,
     description='Automated LAN scanner based on masscan and nmap',
     long_description=long_description,
+    long_description_content_type="text/markdown",
     author='Vladimir Yarmiychuk',
     author_email='yarmiychuk@protonmail.com ',
     url='https://github.com/v-yar/gummy',
     keywords=['security'],
-
     install_requires=[
         'prompt_toolkit>2.0',
         'prettytable',
