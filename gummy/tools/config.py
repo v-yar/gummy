@@ -21,7 +21,7 @@ class Config:
             'MAIN': {'# Contains the main application settings': None,
                      '# Path:': None,
                      'result_path': Path(os.path.abspath(os.path.join(DIR, '../', 'scans'))),
-                     'masscan_path': '/opt/masscan/bin/masscan',
+                     'masscan_path': '/usr/bin/masscan',
                      'nmap_path': '/usr/bin/nmap',
                      '# Reporting:': None,
                      'rep_type': 'None'

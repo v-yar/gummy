@@ -1,4 +1,6 @@
 import csv
+import os
+from pathlib import Path
 
 import objectpath
 from jsonmerge import Merger
@@ -60,8 +62,9 @@ class Storage:
                                                   }
                                    }
                          }
-        self.ports_des_file = './data/PortDescription.csv'
-        self.ports_rating_file = './data/PortRating.csv'
+        self.DIR = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), '../data')))
+        self.ports_des_file = Path(os.path.abspath(os.path.join(self.DIR, 'PortDescription.csv')))
+        self.ports_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'PortRating.csv')))
         self.ports_des = None
         self.__get_ports_des()
 

@@ -20,7 +20,7 @@ class PortMaster:
         :param stat_weight: statistical list priority
         """
         self.log = Log(name='PortMaster')
-        self.DIR = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../data')))
+        self.DIR = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), '../data')))
         self.man_port_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'ManPortRating.csv')))
         self.nmap_port_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'PortRating.csv')))
         self.stat_port_rating_file = Path(os.path.abspath(os.path.join(self.DIR, 'StatPortRating.csv')))
