@@ -38,7 +38,8 @@ setup(
     package_data={'gummy': ['data/ManPortRating.csv',
                             'data/PortDescription.csv',
                             'data/NmapPortRating.csv',
-                            'data/StatPortRating.csv']},
+                            'data/StatPortRating.csv',
+                            'data/OrganizationallyUniqueIdentifier.csv']},
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',

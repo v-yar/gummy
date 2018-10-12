@@ -35,6 +35,7 @@ class Storage:
                                  },
                         "mac": {"type": "string"},
                         "hostname": {"type": "string"},
+                        "vendor": {"type": "string"},
                         "ports": {
                             "type": "array",
                             "items": {"$ref": "#/definitions/port"}
@@ -144,7 +145,7 @@ class Storage:
     def get_table(self):
         """this method is designed to display a table of hosts"""
         table = PrettyTable()
-        table.field_names = ['IP', 'HOSTNAME', 'COUNT', 'TCP PORTS', 'UDP PORTS']
+        table.field_names = ['IP', 'HOSTNAME', 'VENDOR', 'COUNT', 'TCP PORTS', 'UDP PORTS']
         table.sortby = 'COUNT'
         table.reversesort = True
         table.align = 'l'
@@ -156,12 +157,20 @@ class Storage:
             hostname = tree.execute(f"$.*[@.addr is '{ip}'][0].hostname")
             if hostname is None:
                 hostname = '-'
+            hostname = hostname[:31] + '...' if len(hostname) > 30 else hostname
+
+            vendor = tree.execute(f"$.*[@.addr is '{ip}'][0].vendor")
+            if vendor is None:
+                vendor = '-'
+            vendor = vendor[:31] + '...' if len(vendor) > 30 else vendor
 
             table.add_row([
                 # IP
                 ip,
                 # HOSTNAME
                 hostname,
+                # VENDOR
+                vendor,
                 # COUNT
                 len([p for p in tree.execute(f"$.*[@.addr is '{ip}']..ports[@.state is 'open']")]),
                 # TCP PORTS

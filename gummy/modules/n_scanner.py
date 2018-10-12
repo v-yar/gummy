@@ -37,7 +37,7 @@ class Nscanner:
         self._check_prog()
 
         self._args_basic = ['-sV', '-Pn', '--disable-arp-ping', '-T4', '-O', '--version-light', '--stats-every', '1s']
-        self._args_arp = ['-PR', '-Pn', '-sn']
+        self._args_arp = ['-PR', '-sn', '--stats-every', '1s']
         self._args_dns = ['-sL']
 
     def _check_prog(self):

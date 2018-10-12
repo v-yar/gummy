@@ -2,6 +2,7 @@ import asyncio
 import datetime
 import glob
 import os
+import pprint
 import random
 import re
 import shutil
@@ -108,11 +109,11 @@ class GummyShell:
                         '#c6c6c6',)
 
         self.commands = {'set': self.config.get_all_start_config_key(),
-                         'show': {'config': 'use all',
-                                  'host': 'show sockets table',
-                                  'port': 'show port info',
-                                  'task': 'debug method',
-                                  'log': 'show the last n lines of the log file'},
+                         'show': {'config': 'print curent config (takes param)',
+                                  'host': 'print host table (takes param)',
+                                  'port': 'print port table',
+                                  'task': 'print running tasks',
+                                  'log': 'print the last n lines of the log file'},
                          'sync': {'config': 'synchronizes the configuration file'},
                          'run': self.get_scanner_methods(self.scan),
                          'workspase': self.get_all_workspase(),
@@ -132,7 +133,7 @@ class GummyShell:
         self.grammar = compile("""
             (\s*  (?P<command>[a-z]+)   \s*) |
             (\s*  (?P<command>[a-z]+)   \s+   (?P<operator>[A-Za-z0-9_-]+)  \s*) |
-            (\s*  (?P<command>[a-z]+)   \s+   (?P<operator>[A-Za-z0-9_-]+)  \s+  (?P<parameter>[A-Za-z0-9.,-_/]+) \s*)
+            (\s*  (?P<command>[a-z]+)   \s+   (?P<operator>[A-Za-z0-9_-]+)  \s+  (?P<parameter>[A-Za-z0-9.,-_/+*]+) \s*)
                             """)
         self.style = Style.from_dict({
             'command': '#216f21 bold',
@@ -178,54 +179,82 @@ class GummyShell:
     # user-invoked function block:
 
     def f_show(self, **kwargs):
+        def show_port(self):
+            for line in str(self.db.get_ports_info()).split('\n'):
+                self.log.info(line)
+
+        def show_task(self):
+            for item_task in asyncio.Task.all_tasks():
+                self.log.info('-' * 50)
+                self.log.info(item_task)
+
+        def show_log(self, pr):
+            pr = int(pr) if pr else 100
+            try:
+                line_need = int(pr)
+            except ValueError:
+                self.log.info('use int in param')
+                line_need = 100
+            with open(self.config.start_config['LOGING']['log_file_path']) as lp:
+                log = lp.read().split('\n')
+                print('-' * 8)
+                for ind, line in enumerate(log):
+                    if len(log) - line_need <= ind:
+                        print(f'log {ind:4}|  {line}')
+                print('-' * 8)
+
+        def show_config(self, pr):
+            if pr:
+                vl = self.config.get_start_config_key(key=pr)
+                self.log.info(f'{pr}: {vl}')
+            else:
+                table = PrettyTable()
+                table.field_names = ['SECTOR', 'KEY', 'VALUE']
+                table.align = 'l'
+                table.align['SECTOR'] = 'c'
+                conf = self.config.get_start_config
+                for item in conf:
+                    table.add_row(item)
+                for line in str(table).split('\n'):
+                    self.log.info(line)
+
+        def show_host(self, pr):
+            if pr:
+                pp = pprint.PrettyPrinter(width=80)
+
+                pr = pr.replace('*', '[\d.]*')
+                pr = pr.replace('+', '[\d.]+')
+                pr = ''.join([pr, '$'])
+                try:
+                    regex = re.compile(pr)
+                except Exception:
+                    self.log.warning('Invalid regexp')
+                else:
+                    for host in self.db.data:
+                        try:
+                            search = regex.search(host['addr'])
+                        except Exception:
+                            search = False
+                            self.log.warning('Invalid regexp')
+                        if search:
+                            for line in pp.pformat(host).split('\n'):
+                                self.log.info(line)
+            else:
+                for line in str(self.db.get_table()).split('\n'):
+                    self.log.info(line)
+
         if kwargs.get('operator'):
             op = kwargs.get('operator')
             if op == 'config':
-                if kwargs.get('parameter'):
-                    pr = kwargs.get('parameter')
-                    if pr == 'all':
-                        table = PrettyTable()
-                        table.field_names = ['SECTOR', 'KEY', 'VALUE']
-                        table.align = 'l'
-                        table.align['SECTOR'] = 'c'
-                        conf = self.config.get_start_config
-                        for item in conf:
-                            table.add_row(item)
-                        for line in str(table).split('\n'):
-                            self.log.info(line)
-                    else:
-                        vl = self.config.get_start_config_key(key=pr)
-                        self.log.info(f'{pr}: {vl}')
-                else:
-                    self.log.info('Use:')
-                    self.log.info('all or: ' + ', '.join(self.config.get_all_start_config_key()))
+                show_config(self, pr=kwargs.get('parameter'))
             elif op == 'log':
-                if kwargs.get('parameter'):
-                    pr = kwargs.get('parameter')
-                else:
-                    pr = 100
-                try:
-                    line_need = int(pr)
-                except ValueError:
-                    self.log.info('use int in param')
-                    line_need = 100
-                with open(self.config.start_config['LOGING']['log_file_path']) as lp:
-                    log = lp.read().split('\n')
-                    print('-' * 8)
-                    for ind, line in enumerate(log):
-                        if len(log) - line_need <= ind:
-                            print(f'log {ind:4}|  {line}')
-                    print('-' * 8)
+                show_log(self, pr=kwargs.get('parameter'))
             elif op == 'host':
-                for line in str(self.db.get_table()).split('\n'):
-                    self.log.info(line)
+                show_host(self, pr=kwargs.get('parameter'))
             elif op == 'task':
-                for item_task in asyncio.Task.all_tasks():
-                    self.log.info('-' * 50)
-                    self.log.info(item_task)
+                show_task(self)
             elif op == 'port':
-                for line in str(self.db.get_ports_info()).split('\n'):
-                    self.log.info(line)
+                show_port(self)
         else:
             self.log.info('What to show?')
             self.log.info(', '.join(self.commands.get('show')))
@@ -411,10 +440,11 @@ class GummyShell:
                                         style=self.style,
                                         history=self.history,
                                         enable_history_search=True,
-                                        auto_suggest=AutoSuggestFromHistory())
+                                        auto_suggest=AutoSuggestFromHistory(),
+                                        bottom_toolbar=self.get_toolbar,
+                                        wrap_lines=False)
 
-                result = await session.prompt(async_=True,
-                                              bottom_toolbar=self.get_toolbar)
+                result = await session.prompt(async_=True)
 
                 self.log.debug(f'input: {result}')
 

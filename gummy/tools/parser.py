@@ -66,6 +66,7 @@ class Parser:
         for item in self.tree.findall('host'):
             host_addr = None
             host_mac = None
+            host_mac_vendor = None
             host_hostname = None
             host_ports = list()
 
@@ -75,6 +76,8 @@ class Parser:
                     host_addr = adress.attrib['addr']
                 elif adress.attrib['addrtype'] == 'mac':
                     host_mac = adress.attrib['addr']
+                    if 'vendor' in adress.attrib:
+                        host_mac_vendor = adress.attrib['vendor']
 
             hostnames = item.findall('hostnames/hostname')
             for hostname in hostnames:
@@ -97,18 +100,21 @@ class Parser:
             if host_hostname is not None:
                 host['hostname'] = host_hostname
 
+            if host_mac_vendor is not None:
+                host['vendor'] = host_mac_vendor
+
             if len(host_ports) != 0:
                 host['ports'] = host_ports
 
-            is_it_arp_scan = all(i in self.scan['args'] for i in ['-PR', '-Pn', '-sn'])
+            # is_it_arp_scan = all(i in self.scan['args'] for i in ['-PR', '-sn'])
 
             is_it_dns_scan = '-sL' in self.scan['args']
 
             if is_it_dns_scan:
                 continue
 
-            if is_it_arp_scan and host_hostname is None:
-                continue
+            # if is_it_arp_scan and host_hostname is None:
+            #     continue
 
             self.result.append(host)
 
